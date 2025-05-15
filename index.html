@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Siro'nun Alanı</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background-color: black;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .matrix-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: black;
+      overflow: hidden;
+    }
+
+    .matrix-bg canvas {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    header, .section, .music-section {
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      margin: 20px;
+      animation-delay: 0.3s;
+    }
+
+    .profile-img {
+      width: 120px;
+      border-radius: 50%;
+      border: 3px solid #00ff00;
+      box-shadow: 0 0 20px #00ff00;
+    }
+
+    .title {
+      font-size: 50px;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+      margin: 20px 0;
+    }
+
+    .section {
+      text-align: center;
+      margin: 60px 20px;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: 10px;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.6s;
+    }
+
+    .section h2 {
+      color: #00ff00;
+    }
+
+    .section p {
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    .anime-girl {
+      max-width: 100%;
+      border-radius: 20px;
+      border: 3px solid #00ff00;
+      box-shadow: 0 0 20px #00ff00;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.9s;
+    }
+
+    .contact-button {
+      margin: 20px auto;
+      display: block;
+      width: 250px;
+      padding: 15px;
+      font-size: 18px;
+      color: white;
+      background-color: transparent;
+      border: 2px solid #00ff00;
+      border-radius: 10px;
+      text-shadow: 0 0 10px #00ff00;
+      box-shadow: 0 0 15px #00ff00;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .contact-button:hover {
+      background-color: #00ff00;
+      color: black;
+    }
+
+    #nah-screen {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: black;
+      color: red;
+      font-size: 100px;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+    }
+
+    .music-section {
+      text-align: center;
+      margin: 80px 20px;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 40px 20px;
+      border-top: 2px solid #00ff00;
+      border-bottom: 2px solid #00ff00;
+      box-shadow: inset 0 0 15px #00ff00;
+      border-radius: 10px;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 1.2s;
+    }
+
+    .music-section h2 {
+      color: #00ffcc;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .music-button {
+      padding: 15px 30px;
+      font-size: 18px;
+      color: #fff;
+      background-color: #111;
+      border: 2px solid #00ffcc;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #00ffcc;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .music-button:hover {
+      background-color: #00ffcc;
+      color: black;
+    }
+
+    .nasuh-gay {
+      position: fixed;
+      bottom: 5px;
+      right: 8px;
+      font-size: 12px;
+      color: #444;
+      text-shadow: 0 0 3px #0f0;
+      z-index: 100;
+    }
+
+    /* Visualizer canvas */
+    #visualizer {
+      margin-top: 30px;
+      max-width: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #00ffcc;
+      height: 100px;
+      width: 400px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="matrix-bg">
+  <canvas id="matrix"></canvas>
+</div>
+
+<header>
+  <img src="gojo.jpg" alt="Gojo" class="profile-img" />
+  <div class="title">SIRO</div>
+</header>
+
+<section class="section">
+  <h2>Ben Kimim?</h2>
+  <p>Sanal kod adım: <span style="color:#00ff00;">Siro</span></p>
+  <p>Telegram kullanıcı adım: <span style="color:#00ff00;">@YuceSiro</span></p>
+  <p>Kanal Sayısı: <span style="color:#00ff00;">11</span></p>
+  <p>Grup Sayısı: <span style="color:#00ff00;">6</span></p>
+  <p>Kanalları sizinle paylaşamam, özel! <span style="color:#00ff00;">:)</span></p>
+</section>
+
+<section class="section">
+  <img class="anime-girl" src="beyaz.jpg" alt="Anime Girl" />
+</section>
+
+<section class="section">
+  <h2>Bana Ulaş</h2>
+  <button class="contact-button" onclick="window.location.href='tg://openmessage?user_id=5925291634'">Telegram</button>
+</section>
+
+<section class="music-section">
+  <h2>Müzik Kanalım</h2>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px;">
+    <img src="siroj.jpg" alt="Siroj" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid #00ffcc; box-shadow: 0 0 10px #00ffcc;">
+    <button class="music-button" onclick="window.location.href='https://t.me/sir00OO'">Kanalı Aç</button>
+  </div>
+
+  <!-- Müzik oynatıcı -->
+  <audio controls style="width: 90%; max-width: 400px;" id="audio">
+    <source src="music.mp3" type="audio/mpeg">
+    Tarayıcınız bu ses öğesini desteklemiyor.
+  </audio>
+</section>
+<div class="nasuh-gay">Nasuh gay:)</div>
+
+<script>
+  // Matrix animation
+  const canvas = document.getElementById("matrix");
+  const ctx = canvas.getContext("2d");
+
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+
+  const letters = "01";
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+  const drops = [];
+
+  for (let x = 0; x < columns; x++) drops[x] = 1;
+
+  function draw() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#0f0";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+        drops[i] = 0;
+
+      drops[i]++;
+    }
+  }
+
+  setInterval(draw, 33);
+
+  // Audio Visualizer
+  const audio = document.getElementById("audio");
+  const canvasVis = document.getElementById("visualizer");
+  const ctxVis = canvasVis.getContext("2d");
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const analyser = audioCtx.createAnalyser();
+  const source = audioCtx.createMediaElementSource(audio);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  analyser.fftSize = 64;
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  function drawVisualizer() {
+    requestAnimationFrame(drawVisualizer);
+
+    analyser.getByteFrequencyData(dataArray);
+
+    ctxVis.fillStyle = "rgba(0, 0, 0, 0.2)";
+    ctxVis.fillRect(0, 0, canvasVis.width, canvasVis.height);
+
+    const barWidth = (canvasVis.width / bufferLength) * 1.5;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const barHeight = dataArray[i] / 1.5;
+      ctxVis.fillStyle = "#00ffcc";
+      ctxVis.fillRect(x, canvasVis.height - barHeight, barWidth, barHeight);
+      x += barWidth + 1;
+    }
+  }
+
+  audio.onplay = () => {
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
+    drawVisualizer();
+  };
+
+  window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+
+</body>
+</html>
