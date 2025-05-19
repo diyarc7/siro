@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Siro'nun Alanı</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      overflow-x: hidden;
+      margin: 0;
+      font-family: 'Courier New', monospace;
+    }
+    .matrix-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: black;
+      overflow: hidden;
+    }
+    .matrix-bg canvas {
+      display: block;
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    header, .section, .music-section {
+      animation: fadeInUp 1s ease forwards;
+    }
+    header {
+      text-align: center;
+      padding: 8vw 4vw;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      margin: 5vw;
+      animation-delay: 0.3s;
+    }
+    .profile-img {
+      width: 30vw;
+      max-width: 120px;
+      border-radius: 50%;
+      border: 3px solid #00ff00;
+      box-shadow: 0 0 20px #00ff00;
+    }
+    .title {
+      font-size: 8vw;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+      margin: 4vw 0;
+    }
+    .section {
+      text-align: center;
+      margin: 12vw 4vw;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 4vw;
+      border-radius: 10px;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.6s;
+    }
+    .section h2 {
+      color: #00ff00;
+      font-size: 6vw;
+    }
+    .section p {
+      font-size: 4.5vw;
+      color: #ccc;
+      font-weight: bold;
+    }
+    .anime-girl {
+      width: 100%;
+      border-radius: 20px;
+      border: 3px solid #00ff00;
+      box-shadow: 0 0 20px #00ff00;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 0.9s;
+    }
+    .contact-button {
+      margin: 5vw auto;
+      display: block;
+      width: 60vw;
+      padding: 4vw;
+      font-size: 4.5vw;
+      color: white;
+      background-color: transparent;
+      border: 2px solid #00ff00;
+      border-radius: 10px;
+      text-shadow: 0 0 10px #00ff00;
+      box-shadow: 0 0 15px #00ff00;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .contact-button:hover {
+      background-color: #00ff00;
+      color: black;
+    }
+    .music-section {
+      text-align: center;
+      margin: 16vw 4vw;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 8vw 4vw;
+      border-top: 2px solid #00ff00;
+      border-bottom: 2px solid #00ff00;
+      box-shadow: inset 0 0 15px #00ff00;
+      border-radius: 10px;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 1.2s;
+    }
+    .music-section h2 {
+      color: #00ffcc;
+      font-size: 5.5vw;
+      margin-bottom: 4vw;
+    }
+    .music-button {
+      padding: 4vw 6vw;
+      font-size: 4.5vw;
+      color: #fff;
+      background-color: #111;
+      border: 2px solid #00ffcc;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #00ffcc;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 3vw;
+    }
+    .music-button:hover {
+      background-color: #00ffcc;
+      color: black;
+    }
+    .nasuh-gay {
+      position: fixed;
+      bottom: 1vw;
+      right: 2vw;
+      font-size: 3vw;
+      color: #444;
+      text-shadow: 0 0 3px #0f0;
+      z-index: 100;
+    }
+    audio {
+      width: 90%;
+      max-width: 400px;
+      margin-top: 5vw;
+    }
+    /* Hamburger Menü */
+    .hamburger {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      width: 40px;
+      height: 40px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: pointer;
+      background: rgba(0,0,0,0.7);
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00ff00;
+      transition: 0.2s;
+    }
+    .hamburger span {
+      height: 4px;
+      width: 28px;
+      background: #00ff00;
+      margin: 4px auto;
+      border-radius: 2px;
+      display: block;
+      transition: 0.3s;
+    }
+    /* Yan Menü */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 250px;
+      height: 100vh;
+      background: rgba(10, 10, 10, 0.98);
+      box-shadow: 2px 0 20px #00ff00;
+      z-index: 300;
+      padding: 40px 20px;
+      transition: left 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    .side-menu.open {
+      left: 0;
+    }
+    .side-menu .menu-title {
+      color: #00ff00;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: left;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 2px;
+    }
+    .side-menu .menu-item {
+      color: #fff;
+      font-size: 1.2rem;
+      padding: 12px 0;
+      border-bottom: 1px solid #222;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .side-menu .menu-item:hover {
+      color: #00ff00;
+    }
+    .side-menu .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 18px;
+      font-size: 1.5rem;
+      color: #00ff00;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    /* Admin Panel Modal */
+    .admin-panel-modal-bg {
+      display: none;
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .admin-panel-modal-bg.active {
+      display: flex;
+    }
+    .admin-panel-modal {
+      background: #111d;
+      border-radius: 18px;
+      box-shadow: 0 0 60px #00ffcc, 0 0 40px #fff inset;
+      padding: 0 0 32px 0;
+      min-width: 340px;
+      max-width: 95vw;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.7s;
+    }
+    .admin-panel-modal .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 1.7rem;
+      color: #00ffcc;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .admin-panel-modal .gojo-glow {
+      margin-top: 4vh;
+      width: 220px;
+      max-width: 80vw;
+      border-radius: 18px;
+      box-shadow: 0 0 60px 20px #00ffcc, 0 0 40px 10px #fff inset;
+      animation: glow 2s infinite alternate;
+      z-index: 2;
+      display: block;
+      object-fit: cover;
+      border: 3px solid #00ffcc;
+    }
+    .admin-panel-modal .welcome {
+      margin: 24px 0 10px 0;
+      font-size: 2.2rem;
+      color: #00ffcc;
+      text-shadow: 0 0 18px #00ffcc, 0 0 8px #fff;
+      font-family: 'Orbitron', 'Courier New', monospace;
+      letter-spacing: 2px;
+      text-align: center;
+      font-weight: bold;
+      z-index: 2;
+    }
+    .admin-panel-modal .options {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      width: 90vw;
+      max-width: 400px;
+      z-index: 2;
+      align-items: center;
+    }
+    .admin-panel-modal .option-btn {
+      width: 100%;
+      padding: 18px 0;
+      font-size: 1.25rem;
+      color: #fff;
+      background: linear-gradient(90deg, #00ffcc 0%, #00ff00 100%);
+      border: none;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px #00ffcc88, 0 2px 8px #000, 0 0 0 4px #111 inset;
+      font-family: 'Orbitron', 'Courier New', monospace;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+      text-shadow: 0 0 8px #00ffcc, 0 0 2px #000;
+      outline: none;
+    }
+    .admin-panel-modal .option-btn:hover {
+      transform: scale(1.04);
+      background: linear-gradient(90deg, #00ff00 0%, #00ffcc 100%);
+      box-shadow: 0 12px 40px #00ffcc, 0 2px 8px #000, 0 0 0 6px #00ffcc44 inset;
+      color: #111;
+      text-shadow: 0 0 12px #fff, 0 0 2px #00ffcc;
+    }
+    .admin-panel-modal .error-modal-bg {
+      display: none;
+      position: fixed;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      z-index: 1010;
+      align-items: center;
+      justify-content: center;
+    }
+    .admin-panel-modal .error-modal-bg.active {
+      display: flex;
+    }
+    .admin-panel-modal .error-modal {
+      background: #111;
+      border-radius: 18px;
+      box-shadow: 0 0 30px #00ffcc;
+      padding: 40px 32px;
+      min-width: 280px;
+      max-width: 90vw;
+      text-align: center;
+      position: relative;
+      z-index: 11;
+      animation: fadeInUp 0.7s;
+    }
+    .admin-panel-modal .error-modal .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 1.7rem;
+      color: #00ffcc;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .admin-panel-modal .error-modal .error-text {
+      color: #ff4444;
+      font-size: 1.3rem;
+      font-family: 'Courier New', monospace;
+      margin-top: 12px;
+      text-shadow: 0 0 8px #ff4444, 0 0 2px #fff;
+    }
+    @keyframes glow {
+      from { box-shadow:0 0 30px 8px #00ffcc,0 0 10px 2px #fff inset;filter:brightness(1);}
+      to { box-shadow:0 0 80px 30px #00ffcc,0 0 40px 10px #fff inset;filter:brightness(1.15);}
+    }
+    @keyframes spin {
+      0% { transform:rotate(0deg);}
+      100% { transform:rotate(360deg);}
+    }
+    @media (max-width: 600px) {
+      .admin-panel-modal .gojo-glow { width: 90vw; }
+      .admin-panel-modal .options { max-width: 98vw; }
+      .admin-panel-modal .option-btn { font-size: 1.05rem; padding: 14px 0; }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="matrix-bg">
+    <canvas id="matrix"></canvas>
+  </div>
+  <!-- Hamburger Menü -->
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <!-- Yan Menü -->
+  <div class="side-menu" id="sideMenu">
+    <button class="close-btn" onclick="toggleMenu()">&times;</button>
+    <div class="menu-title">Menü</div>
+    <div class="menu-item" onclick="openAdminModal();toggleMenu();">Admin Girişi</div>
+  </div>
+  <!-- Admin Giriş Modalı -->
+  <div class="admin-panel-modal-bg" id="adminModalBg">
+    <div class="admin-panel-modal">
+      <button class="close-modal" onclick="closeAdminModal()">&times;</button>
+      <video id="adminPanelVideo" autoplay loop playsinline muted style="width:100%; max-height:220px; border-radius: 18px; border: 3px solid #00ffcc; box-shadow: 0 0 60px 20px #00ffcc;">
+  <source src="video.mp4" type="video/mp4">
+  Tarayıcınız video etiketini desteklemiyor.
+</video>
+      <div class="welcome">Admin Paneli Girişi</div>
+      <div class="options">
+        <input type="password" id="adminPassword" placeholder="Parola" autocomplete="off" style="margin-top:12px;padding:10px 16px;font-size:1.1rem;border-radius:8px;border:2px solid #00ff00;background:#222;color:#00ff00;outline:none;width:80%;text-align:center;font-family:'Courier New',monospace;box-shadow:0 0 10px #00ff00;transition:0.2s;">
+        <button class="option-btn" onclick="checkAdminPassword()">Giriş Yap</button>
+        <div id="adminError" style="color:#ff4444;margin-top:10px;font-size:1rem;text-align:center;font-family:'Courier New',monospace;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Admin Panel Modal (asıl panel) -->
+  <div class="admin-panel-modal-bg" id="adminPanelModalBg">
+    <div class="admin-panel-modal">
+      <button class="close-modal" onclick="closeAdminPanel()">&times;</button>
+      <img class="gojo-glow" src="gojo-manga.jpg" alt="Gojo Manga" />
+      <div class="welcome">✦✦✦ Tekrar hoşgeldin patron ✦✦✦</div>
+      <div class="options">
+        <button class="option-btn" onclick="showAdminError()">İNSTAGRAM HESAP ÇALMA</button>
+        <button class="option-btn" onclick="showAdminError()">SNAP HESAP PANELİ</button>
+        <button class="option-btn" onclick="showAdminError()">WP SIZMA</button>
+        <button class="option-btn" onclick="showAdminError()">SMS BOMWDER</button>
+        <button class="option-btn" onclick="showAdminError()">CALL BOMWDER</button>
+      </div>
+      <!-- Error Modal -->
+      <div class="error-modal-bg" id="adminErrorModalBg">
+        <div class="error-modal">
+          <button class="close-modal" onclick="closeAdminError()">&times;</button>
+          <div id="errorLoader" style="display:none;">
+            <div style="margin:30px auto 0 auto;width:60px;height:60px;border:6px solid #00ffcc;border-top:6px solid #fff;border-radius:50%;animation:spin 1s linear infinite;"></div>
+            <div style="color:#00ffcc;margin-top:18px;font-size:1.2rem;">Yükleniyor...</div>
+          </div>
+          <div id="errorText" style="color:#ff4444;font-size:1.3rem;font-family:'Courier New',monospace;margin-top:12px;text-shadow:0 0 8px #ff4444,0 0 2px #fff;display:none;">eror404 - gerekli log dosyaları bulunamadı</div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+  <header>
+    <img src="gojo.jpg" alt="Gojo" class="profile-img" />
+    <div class="title">SIRO</div>
+  </header>
+  <section class="section">
+    <h2>Ben Kimim?</h2>
+    <p>Sanal kod adım: <span style="color:#00ff00;">Siro</span></p>
+    <p>Telegram kullanıcı adım: <span style="color:#00ff00;">@YuceSiro</span></p>
+    <p>Kanal Sayısı: <span style="color:#00ff00;">11</span></p>
+    <p>Grup Sayısı: <span style="color:#00ff00;">6</span></p>
+    <p>Kanalları sizinle paylaşamam, özel! <span style="color:#00ff00;">:)</span></p>
+  </section>
+  <section class="section">
+    <img class="anime-girl" src="beyaz.jpg" alt="Anime Girl" />
+  </section>
+  <section class="section">
+    <h2>Bana Ulaş</h2>
+    <button class="contact-button" onclick="window.location.href='tg://openmessage?user_id=5925291634'">Telegram</button>
+  </section>
+  <section class="music-section">
+    <h2>Müzik Kanalım</h2>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 3vw; margin-bottom: 4vw;">
+      <img src="siroj.jpg" alt="Siroj" style="width: 12vw; height: 12vw; border-radius: 50%; border: 2px solid #00ffcc; box-shadow: 0 0 10px #00ffcc;">
+      <button class="music-button" onclick="window.location.href='https://t.me/sir00OO'">Kanalı Aç</button>
+    </div>
+    <audio controls id="audio">
+      <source src="music.mp3" type="audio/mpeg">
+      Tarayıcınız bu ses öğesini desteklemiyor.
+    </audio>
+  </section>
+  <div class="nasuh-gay">Nasuh gay:)</div>
+  <script>
+    // Matrix animasyonu
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    const letters = "01";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0f0";
+      ctx.font = fontSize + "px monospace";
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(draw, 33);
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // Menü
+    function toggleMenu() {
+      document.getElementById('sideMenu').classList.toggle('open');
+    }
+
+    // Admin Modal Aç/Kapat
+    function openAdminModal() {
+      document.getElementById('adminModalBg').classList.add('active');
+      document.getElementById('adminPassword').value = "";
+      document.getElementById('adminError').textContent = "";
+    }
+    function closeAdminModal() {
+      document.getElementById('adminModalBg').classList.remove('active');
+    }
+
+    // Admin Parola Kontrolü
+    function checkAdminPassword() {
+      const password = document.getElementById('adminPassword').value;
+      const errorDiv = document.getElementById('adminError');
+      if (password === "Siro3131") {
+        closeAdminModal();
+        openAdminPanel();
+      } else {
+        errorDiv.textContent = "Hatalı parola!";
+      }
+    }
+
+    function openAdminPanel() {
+  document.getElementById('adminPanelModalBg').classList.add('active');
+  const video = document.getElementById('adminPanelVideo');
+  video.muted = false;
+  video.currentTime = 0;
+  video.play();
+}
+
+function closeAdminPanel() {
+  document.getElementById('adminPanelModalBg').classList.remove('active');
+  const video = document.getElementById('adminPanelVideo');
+  video.pause();
+  video.currentTime = 0;
+  closeAdminError();
+}
+
+    // Admin Panel Error Modal
+    function showAdminError() {
+      document.getElementById('adminErrorModalBg').classList.add('active');
+      document.getElementById('errorLoader').style.display = "block";
+      document.getElementById('errorText').style.display = "none";
+      setTimeout(function() {
+        document.getElementById('errorLoader').style.display = "none";
+        document.getElementById('errorText').style.display = "block";
+      }, 2200);
+    }
+    function closeAdminError() {
+      document.getElementById('adminErrorModalBg').classList.remove('active');
+      document.getElementById('errorLoader').style.display = "none";
+      document.getElementById('errorText').style.display = "none";
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") {
+        closeAdminModal();
+        closeAdminError();
+        closeAdminPanel();
+        document.getElementById('sideMenu').classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
